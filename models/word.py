@@ -5,11 +5,11 @@ from pydantic import HttpUrl
 
 
 class Word(Document):
-    word: str
-    word_fr: str
+    en: str
+    fr: str
     pictogram: HttpUrl
     asl_video: HttpUrl
     category: Optional[str] = None
 
     class Settings:
-        collection = "words"
+        name = "words"
