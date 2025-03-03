@@ -39,9 +39,9 @@ def configure_routing():
     api.include_router(word_api.router)
 
 
-@api.get("/")
+@api.get("/", include_in_schema=False)
 def index():
-    return {"Hello world!"}
+    return {"message": "Hello world!"}
 
 
 if __name__ == "__main__":
