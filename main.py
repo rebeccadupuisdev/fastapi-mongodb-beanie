@@ -1,12 +1,10 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
-from beanie import init_beanie
 from fastapi import FastAPI
-from motor import motor_asyncio
 
 from api import word_api
-from models.word import Word
+from infrastructure.mongo_setup import init_connection
 
 
 @asynccontextmanager
@@ -20,28 +18,19 @@ async def lifespan(api: FastAPI):
 api = FastAPI(lifespan=lifespan)
 
 
-def main():
-    configure_routing()
-
-    uvicorn.run(api)
-
-
-async def init_connection(db_name: str):
-    conn_str = f"mongodb://localhost:27017/{db_name}"
-    client = motor_asyncio.AsyncIOMotorClient(conn_str)
-
-    await init_beanie(database=client[db_name], document_models=[Word])
-
-    print(f"Connected to {db_name}.")
+@api.get("/", include_in_schema=False)
+def index():
+    return {"message": "Hello world!"}
 
 
 def configure_routing():
     api.include_router(word_api.router)
 
 
-@api.get("/", include_in_schema=False)
-def index():
-    return {"message": "Hello world!"}
+def main():
+    configure_routing()
+
+    uvicorn.run(api)
 
 
 if __name__ == "__main__":
