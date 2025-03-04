@@ -1,13 +1,16 @@
 from beanie import Document
-from pydantic import HttpUrl
+from pydantic import BaseModel, HttpUrl
 
 
-class Word(Document):
+class WordCreate(BaseModel):
     en: str
     fr: str
     pictogram: HttpUrl
     asl_video: HttpUrl
     category: str | None = None
+
+
+class Word(WordCreate, Document):
 
     class Settings:
         name = "words"

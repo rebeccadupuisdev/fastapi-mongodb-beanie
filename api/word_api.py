@@ -1,6 +1,6 @@
 import fastapi
 
-from models.word import Word
+from models.word import Word, WordCreate
 from services.word_service import create_word, find_word_en
 
 router = fastapi.APIRouter()
@@ -21,13 +21,7 @@ async def word(word_en: str):
     return word
 
 
-@router.post("/api/words/create", response_model=Word)
-async def word(word: Word):
-    new_word = await create_word(
-        word_en=word.en,
-        word_fr=word.fr,
-        pictogram=word.pictogram,
-        asl_video=word.asl_video,
-        category=word.category,
-    )
+@router.post("/api/words", response_model=Word)
+async def word(word: WordCreate):
+    new_word = await create_word(**word.model_dump())
     return new_word
