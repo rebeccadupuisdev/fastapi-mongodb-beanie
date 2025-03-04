@@ -1,5 +1,3 @@
-from typing import Optional
-
 from beanie import Document
 from pydantic import HttpUrl
 
@@ -9,7 +7,7 @@ class Word(Document):
     fr: str
     pictogram: HttpUrl
     asl_video: HttpUrl
-    category: Optional[str] = None
+    category: str | None = None
 
     class Settings:
         name = "words"
