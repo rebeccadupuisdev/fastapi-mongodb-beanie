@@ -4,3 +4,4 @@ black
 beanie
 isort
 pytest
+pytest-asyncio
