@@ -10,8 +10,9 @@ from infrastructure.mongo_setup import init_connection
 @asynccontextmanager
 async def lifespan(api: FastAPI):
     print("Start app...")
-    await init_connection("words_app")
+    client = await init_connection("words_app")
     yield
+    client.close()
     print("Stop app...")
 
 

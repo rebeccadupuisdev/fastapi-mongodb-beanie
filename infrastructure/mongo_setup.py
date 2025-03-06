@@ -11,3 +11,5 @@ async def init_connection(db_name: str):
     await init_beanie(database=client[db_name], document_models=[Word])
 
     print(f"Connected to {db_name}.")
+
+    return client
