@@ -1,4 +1,4 @@
-# fastapi-mongodb-beanie-app
+# Dictionary with ASL and pictograms
 FastAPI app with MongoDB and Beanie
 
 **Start MongoDB server in Docker**
