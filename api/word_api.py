@@ -1,7 +1,13 @@
 import fastapi
 
 from models.word import Word, WordCreate
-from services.word_service import create_word, delete_word_en, find_word_en, get_words
+from services.word_service import (
+    create_word,
+    delete_word_en,
+    find_word_en,
+    get_pictograms,
+    get_words,
+)
 
 router = fastapi.APIRouter()
 
@@ -30,6 +36,12 @@ async def api_delete_word(word_en: str):
 async def api_create_word(word: WordCreate):
     new_word = await create_word(**word.model_dump())
     return new_word
+
+
+@router.get("/api/pictograms", name="Get Pictograms")
+async def api_get_pictograms():
+    pictograms = await get_pictograms()
+    return pictograms
 
 
 @router.get("/api/words", name="Get Words")

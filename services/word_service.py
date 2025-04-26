@@ -1,6 +1,6 @@
 from pydantic import HttpUrl
 
-from models.word import Word, WordShortView
+from models.word import Word, WordPictogramView, WordShortView
 
 
 async def find_word_en(word_en: str) -> Word | None:
@@ -41,6 +41,10 @@ async def create_word(
 
 async def get_words():
     return await Word.find().project(WordShortView).to_list()
+
+
+async def get_pictograms():
+    return await Word.find().project(WordPictogramView).to_list()
 
 
 async def delete_word_en(word_en: str):

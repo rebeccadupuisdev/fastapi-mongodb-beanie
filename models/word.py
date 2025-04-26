@@ -33,3 +33,8 @@ class Word(WordCreate, Document):
 class WordShortView(BaseModel):
     en: str
     fr: str
+
+
+class WordPictogramView(BaseModel):
+    en: str
+    pictogram: HttpUrl
