@@ -20,3 +20,8 @@ class Word(WordCreate, Document):
 
     class Settings:
         name = "words"
+
+
+class WordShortView(BaseModel):
+    en: str
+    fr: str

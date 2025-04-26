@@ -1,6 +1,6 @@
 from pydantic import HttpUrl
 
-from models.word import Word
+from models.word import Word, WordShortView
 
 
 async def find_word_en(word_en: str) -> Word | None:
@@ -37,3 +37,7 @@ async def create_word(
     print(f"New word created: {word.en}")
 
     return word
+
+
+async def get_words():
+    return await Word.find().project(WordShortView).to_list()
