@@ -3,7 +3,7 @@ import pytest_asyncio
 from pydantic import HttpUrl
 
 from models.word import WordCreate
-from services.word_service import create_word, get_words
+from services.word_service import create_word, delete_word_en, find_word_en, get_words
 
 
 @pytest.mark.asyncio(loop_scope="session")
@@ -75,3 +75,14 @@ async def test_get_words(base_data):
         assert word.fr == base_data[i].get("fr")
 
     assert len(words) == len(base_data)
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_delete_word_en(base_data):
+    await delete_word_en(base_data[0].get("en"))
+
+    word = await find_word_en(base_data[0].get("en"))
+    words = await get_words()
+
+    assert word is None
+    assert len(words) == len(base_data) - 1
