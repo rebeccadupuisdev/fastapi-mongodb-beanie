@@ -3,7 +3,13 @@ import pytest_asyncio
 from pydantic import HttpUrl
 
 from models.word import WordCreate
-from services.word_service import create_word, delete_word_en, find_word_en, get_words
+from services.word_service import (
+    create_word,
+    delete_word_en,
+    find_word_en,
+    get_pictograms,
+    get_words,
+)
 
 
 @pytest.mark.asyncio(loop_scope="session")
@@ -86,3 +92,16 @@ async def test_delete_word_en(base_data):
 
     assert word is None
     assert len(words) == len(base_data) - 1
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_get_pictograms(base_data):
+    """Test getting all pictograms from the database"""
+
+    words = await get_pictograms()
+
+    for i, word in enumerate(words):
+        assert word.en == base_data[i].get("en")
+        assert word.pictogram == HttpUrl(base_data[i].get("pictogram"))
+
+    assert len(words) == len(base_data)
