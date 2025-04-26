@@ -16,7 +16,7 @@ async def word(word_en: str):
     word = await find_word_en(word_en)
     if not word:
         return fastapi.responses.JSONResponse(
-            {"error": f"Word {word_en.capitalize()} not found"}, status_code=404
+            {"error": f"Word {word_en.title()} not found"}, status_code=404
         )
     return word
 

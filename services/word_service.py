@@ -5,7 +5,7 @@ from models.word import Word, WordShortView
 
 async def find_word_en(word_en: str) -> Word | None:
 
-    word_en = word_en.strip().capitalize()
+    word_en = word_en.strip().title()
     return await Word.find_one(Word.en == word_en)
 
 
@@ -20,9 +20,9 @@ async def create_word(
         print(f"Word {existing_word.en} already exists!")
         return existing_word
 
-    en = en.strip().capitalize()
-    fr = fr.strip().capitalize()
-    category = category.strip().capitalize() if category else None
+    en = en.strip().title()
+    fr = fr.strip().title()
+    category = category.strip().title() if category else None
 
     word = Word(
         en=en,
