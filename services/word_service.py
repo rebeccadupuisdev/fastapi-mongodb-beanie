@@ -41,3 +41,9 @@ async def create_word(
 
 async def get_words():
     return await Word.find().project(WordShortView).to_list()
+
+
+async def delete_word_en(word_en: str):
+    word = await find_word_en(word_en)
+    if word:
+        await word.delete()

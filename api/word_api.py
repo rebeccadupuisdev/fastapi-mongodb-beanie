@@ -1,7 +1,7 @@
 import fastapi
 
 from models.word import Word, WordCreate
-from services.word_service import create_word, find_word_en, get_words
+from services.word_service import create_word, delete_word_en, find_word_en, get_words
 
 router = fastapi.APIRouter()
 
@@ -19,6 +19,11 @@ async def api_find_word_en(word_en: str):
             {"error": f"Word {word_en.title()} not found"}, status_code=404
         )
     return word
+
+
+@router.delete("/api/words/en/{word_en}", name="Delete Word EN")
+async def api_delete_word(word_en: str):
+    await delete_word_en(word_en)
 
 
 @router.post("/api/words", name="Create Word", response_model=Word)
