@@ -11,8 +11,8 @@ def api():
     return {"message": "Hello API!"}
 
 
-@router.get("/api/words/en/{word_en}", response_model=Word)
-async def word(word_en: str):
+@router.get("/api/words/en/{word_en}", name="Find Word EN", response_model=Word)
+async def api_find_word_en(word_en: str):
     word = await find_word_en(word_en)
     if not word:
         return fastapi.responses.JSONResponse(
@@ -21,13 +21,13 @@ async def word(word_en: str):
     return word
 
 
-@router.post("/api/words", response_model=Word)
-async def word(word: WordCreate):
+@router.post("/api/words", name="Create Word", response_model=Word)
+async def api_create_word(word: WordCreate):
     new_word = await create_word(**word.model_dump())
     return new_word
 
 
-@router.get("/api/words")
-async def word():
+@router.get("/api/words", name="Get Words")
+async def api_get_words():
     words = await get_words()
     return words
