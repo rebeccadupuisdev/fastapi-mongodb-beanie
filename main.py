@@ -24,6 +24,11 @@ def index():
     return {"message": "Hello world!"}
 
 
+@api.get("/api", include_in_schema=False)
+def api_route():
+    return {"message": "Hello API!"}
+
+
 def configure_routing():
     api.include_router(word_api.router)
 
