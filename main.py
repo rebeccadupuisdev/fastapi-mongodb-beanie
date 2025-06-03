@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 
-from api import word_api
+from api import category_api, word_api
 from infrastructure.mongo_setup import init_connection
 
 
@@ -31,6 +31,7 @@ def api_route():
 
 def configure_routing():
     api.include_router(word_api.router)
+    api.include_router(category_api.router)
 
 
 def main():
