@@ -18,8 +18,9 @@ async def test_create_word():
     w = WordCreate(
         en="Cheese",
         fr="Fromage",
-        pictogram="http://example.com/image.jpg",
-        asl_video="http://example.com/video.mp4",
+        pictogram=HttpUrl("http://example.com/image.jpg"),
+        asl_video=HttpUrl("http://example.com/video.mp4"),
+        category=None,
     )
 
     new_word = await create_word(**w.model_dump())
@@ -59,10 +60,11 @@ async def base_data():
     for item in data:
 
         w = WordCreate(
-            en=item.get("en"),
-            fr=item.get("fr"),
-            pictogram=item.get("pictogram"),
-            asl_video=item.get("asl_video"),
+            en=item["en"],
+            fr=item["fr"],
+            pictogram=HttpUrl(item["pictogram"]),
+            asl_video=HttpUrl(item["asl_video"]),
+            category=None,
         )
 
         await create_word(**w.model_dump())
