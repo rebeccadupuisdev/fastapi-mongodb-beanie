@@ -35,7 +35,6 @@ async def test_create_word():
 
 @pytest_asyncio.fixture
 async def base_data():
-
     data = [
         {
             "en": "Cheese",
@@ -58,7 +57,6 @@ async def base_data():
     ]
 
     for item in data:
-
         w = WordCreate(
             en=item["en"],
             fr=item["fr"],

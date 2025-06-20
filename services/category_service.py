@@ -4,7 +4,6 @@ from models.category import Category
 
 
 async def find_category_en(category_en: str) -> Category | None:
-
     category_en = category_en.strip().title()
     return await Category.find_one(Category.en == category_en)
 

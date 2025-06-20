@@ -4,7 +4,6 @@ from models.word import Word, WordPictogramView, WordShortView
 
 
 async def find_word_en(word_en: str) -> Word | None:
-
     word_en = word_en.strip().title()
     return await Word.find_one(Word.en == word_en)
 

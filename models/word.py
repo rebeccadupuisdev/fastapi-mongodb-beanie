@@ -25,7 +25,6 @@ class WordCreate(BaseModel):
 
 
 class Word(WordCreate, Document):
-
     class Settings:
         name = "words"
 

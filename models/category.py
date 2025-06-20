@@ -17,6 +17,5 @@ class CategoryCreate(BaseModel):
 
 
 class Category(CategoryCreate, Document):
-
     class Settings:
         name = "categories"
