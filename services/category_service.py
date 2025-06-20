@@ -1,6 +1,6 @@
 from pydantic import HttpUrl
 
-from models.category import Category, CategoryCreate
+from models.category import Category
 
 
 async def find_category_en(category_en: str) -> Category | None:

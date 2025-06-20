@@ -1,7 +1,7 @@
 import pytest
 from pydantic import HttpUrl, ValidationError
 
-from models.category import Category, CategoryCreate
+from models.category import CategoryCreate
 
 
 def test_category_create():

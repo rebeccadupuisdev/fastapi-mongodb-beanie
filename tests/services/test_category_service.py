@@ -2,7 +2,6 @@ import pytest
 import pytest_asyncio
 from pydantic import HttpUrl
 
-from models.category import CategoryCreate
 from services.category_service import create_category, find_category_en
 
 
