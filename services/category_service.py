@@ -1,11 +1,13 @@
+from typing import Optional
+
 from pydantic import HttpUrl
 
 from models.category import Category
 
 
-async def find_category_en(category_en: str) -> Category | None:
-    category_en = category_en.strip().title()
-    return await Category.find_one(Category.en == category_en)
+async def find_category_en(category_en: str) -> Optional[Category]:
+    category = await Category.find_one(Category.en == category_en.strip().title())
+    return category
 
 
 async def create_category(
@@ -26,8 +28,13 @@ async def create_category(
         pictogram=pictogram,
     )
 
-    await category.save()
+    await category.insert()
 
     print(f"New category created: {category.en}")
 
     return category
+
+
+async def get_categories() -> list[Category]:
+    categories = await Category.find_all().to_list()
+    return categories

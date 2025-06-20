@@ -1,11 +1,13 @@
+from typing import Optional
+
 from pydantic import HttpUrl
 
 from models.word import Word, WordPictogramView, WordShortView
 
 
-async def find_word_en(word_en: str) -> Word | None:
-    word_en = word_en.strip().title()
-    return await Word.find_one(Word.en == word_en)
+async def find_word_en(word_en: str) -> Optional[Word]:
+    word = await Word.find_one(Word.en == word_en.strip().title())
+    return word
 
 
 async def create_word(
@@ -50,3 +52,8 @@ async def delete_word_en(word_en: str):
     word = await find_word_en(word_en)
     if word:
         await word.delete()
+
+
+async def get_words_by_category(category_en: str) -> list[Word]:
+    words = await Word.find(Word.category == category_en.strip().title()).to_list()
+    return words

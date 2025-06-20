@@ -2,5 +2,6 @@ fastapi
 uvicorn
 ruff
 beanie
+Jinja2
 pytest
 pytest-asyncio

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Categories Grid -->
+<div id="content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for category in categories %}
+    <a href="/category/{{ category.en|lower }}" class="no-underline bg-dark-800 rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition-all duration-200 border border-dark-700 transform hover:-translate-y-1">
+        <img class="mb-4 w-full h-auto max-w-[600px] max-h-[600px] brightness-90 rounded-lg" src="{{ category.pictogram }}" alt="{{ category.en }} Pictogram">
+        <h2 class="text-xl font-semibold text-gray-100">{{ category.en }}</h2>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %} 
