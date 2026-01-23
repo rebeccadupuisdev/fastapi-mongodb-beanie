@@ -36,10 +36,10 @@ def configure_routing():
     api.include_router(word_api.router)
     api.include_router(category_api.router)
 
-    # View routes
-    api.include_router(home_views.router)
-    api.include_router(word_views.router)
-    api.include_router(category_views.router)
+    # View routes (excluded from API documentation)
+    api.include_router(home_views.router, include_in_schema=False)
+    api.include_router(word_views.router, include_in_schema=False)
+    api.include_router(category_views.router, include_in_schema=False)
 
     # Mount the frontend directory last to ensure API routes take precedence
     api.mount("/static", StaticFiles(directory="frontend/static"), name="static")
