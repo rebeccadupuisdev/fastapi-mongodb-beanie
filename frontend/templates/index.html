@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block breadcrumb %}
+{% include "partials/breadcrumb.html" %}
+{% endblock %}
+
 {% block content %}
 <!-- Categories Grid -->
 <div id="content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -2,6 +2,10 @@
 
 {% block title %}{{ word.en }} - Dictionary App{% endblock %}
 
+{% block breadcrumb %}
+{% include "partials/breadcrumb.html" %}
+{% endblock %}
+
 {% block content %}
 <!-- Word Details -->
 <div class="max-w-6xl mx-auto">
