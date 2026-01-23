@@ -8,8 +8,9 @@ A web application that manages a dictionary of words with their associated Ameri
 - MongoDB: NoSQL database
 - Beanie: MongoDB ODM (Object Document Mapper) for Python
 - Jinja2: Template engine for the web interface
-- TailwindCSS: Utility-first CSS framework for the frontend
-- Docker: For containerization
+- TailwindCSS: Utility-first CSS framework for the frontend (loaded via CDN)
+- HTMX: For dynamic web interactions (loaded via CDN)
+- Docker: For running MongoDB database container
 - pytest: For testing
 
 ## Prerequisites
@@ -26,7 +27,13 @@ git clone <repository-url>
 cd dictionary
 ```
 
-2. Install dependencies:
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
@@ -42,7 +49,7 @@ docker run -d --rm -p 127.0.0.1:27017:27017 -v mongowords:/data/db --name mongow
 
 1. Start the FastAPI application:
 ```bash
-uvicorn main:app --reload
+uvicorn main:api --reload
 ```
 
 2. Access the application:
@@ -64,18 +71,15 @@ uvicorn main:app --reload
 ### API Endpoints
 
 #### Categories
-- `GET /api/categories`: Get all categories
+- `GET /api/categories/en/{category_en}`: Get a category by English name
 - `POST /api/categories`: Create a new category
-- `GET /api/categories/{id}`: Get a specific category
-- `PUT /api/categories/{id}`: Update a category
-- `DELETE /api/categories/{id}`: Delete a category
 
 #### Words
 - `GET /api/words`: Get all words
+- `GET /api/words/en/{word_en}`: Get a word by English name
 - `POST /api/words`: Create a new word
-- `GET /api/words/{id}`: Get a specific word
-- `PUT /api/words/{id}`: Update a word
-- `DELETE /api/words/{id}`: Delete a word
+- `DELETE /api/words/en/{word_en}`: Delete a word by English name
+- `GET /api/pictograms`: Get all pictograms
 
 ## Project Structure
 
@@ -85,10 +89,8 @@ dictionary/
 │   ├── category_api.py
 │   └── word_api.py
 ├── frontend/              # Frontend assets and templates
-│   ├── static/
-│   │   ├── content/      # Static content (videos, images)
-│   │   ├── css/         
-│   │   └── js/
+│   ├── static/            # Static files (created at runtime if needed)
+│   │   └── content/      # Static content (videos, images) - gitignored
 │   └── templates/        # Jinja2 templates
 │       ├── base.html
 │       ├── category.html
@@ -107,10 +109,13 @@ dictionary/
 │   ├── category_views.py
 │   ├── home_views.py
 │   └── word_views.py
-└── tests/               # Test files
-    ├── api/
-    ├── models/
-    └── services/
+├── tests/               # Test files
+│   ├── models/
+│   └── services/
+├── main.py              # Application entry point
+├── pytest.ini           # pytest configuration
+├── pyproject.toml       # Project configuration (Ruff)
+└── requirements.txt     # Python dependencies
 ```
 
 ## Testing
