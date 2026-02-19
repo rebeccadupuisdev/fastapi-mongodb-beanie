@@ -2,11 +2,10 @@ import pytest
 import pytest_asyncio
 from pydantic import HttpUrl
 
-from models.word import WordCreate
 from services.word_service import (
     create_word,
-    delete_word_en,
-    find_word_en,
+    delete_word,
+    find_word,
     get_pictograms,
     get_words,
 )
@@ -15,19 +14,15 @@ from services.word_service import (
 @pytest.mark.asyncio(loop_scope="session")
 async def test_create_word():
     """Test inserting an item into the database"""
-    w = WordCreate(
-        en="Cheese",
-        fr="Fromage",
-        pictogram=HttpUrl("http://example.com/image.jpg"),
-        asl_video=HttpUrl("http://example.com/video.mp4"),
+    new_word = await create_word(
+        text="Cheese",
+        pictogram="http://example.com/image.jpg",
+        asl_video="http://example.com/video.mp4",
         category=None,
     )
 
-    new_word = await create_word(**w.model_dump())
-
     assert new_word is not None
-    assert new_word.en == "Cheese"
-    assert new_word.fr == "Fromage"
+    assert new_word.text == "Cheese"
     assert new_word.pictogram == HttpUrl("http://example.com/image.jpg")
     assert new_word.asl_video == HttpUrl("http://example.com/video.mp4")
     assert new_word.category is None
@@ -37,35 +32,29 @@ async def test_create_word():
 async def base_data():
     data = [
         {
-            "en": "Cheese",
-            "fr": "Fromage",
+            "text": "Cheese",
             "pictogram": "http://example.com/image.jpg",
             "asl_video": "http://example.com/video.mp4",
         },
         {
-            "en": "Ice Cream",
-            "fr": "Crème Glacée",
+            "text": "Ice Cream",
             "pictogram": "http://example.com/image.jpg",
             "asl_video": "http://example.com/video.mp4",
         },
         {
-            "en": "Water",
-            "fr": "Eau",
+            "text": "Water",
             "pictogram": "http://example.com/image.jpg",
             "asl_video": "http://example.com/video.mp4",
         },
     ]
 
     for item in data:
-        w = WordCreate(
-            en=item["en"],
-            fr=item["fr"],
-            pictogram=HttpUrl(item["pictogram"]),
-            asl_video=HttpUrl(item["asl_video"]),
+        await create_word(
+            text=item["text"],
+            pictogram=item["pictogram"],
+            asl_video=item["asl_video"],
             category=None,
         )
-
-        await create_word(**w.model_dump())
 
     return data
 
@@ -77,17 +66,16 @@ async def test_get_words(base_data):
     words = await get_words()
 
     for i, word in enumerate(words):
-        assert word.en == base_data[i].get("en")
-        assert word.fr == base_data[i].get("fr")
+        assert word.text == base_data[i].get("text")
 
     assert len(words) == len(base_data)
 
 
 @pytest.mark.asyncio(loop_scope="session")
-async def test_delete_word_en(base_data):
-    await delete_word_en(base_data[0].get("en"))
+async def test_delete_word(base_data):
+    await delete_word(base_data[0].get("text"))
 
-    word = await find_word_en(base_data[0].get("en"))
+    word = await find_word(base_data[0].get("text"))
     words = await get_words()
 
     assert word is None
@@ -101,7 +89,7 @@ async def test_get_pictograms(base_data):
     words = await get_pictograms()
 
     for i, word in enumerate(words):
-        assert word.en == base_data[i].get("en")
-        assert word.pictogram == HttpUrl(base_data[i].get("pictogram"))
+        assert word.text == base_data[i].get("text")
+        assert str(word.pictogram) == base_data[i].get("pictogram")
 
     assert len(words) == len(base_data)

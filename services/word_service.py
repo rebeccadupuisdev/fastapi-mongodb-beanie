@@ -1,33 +1,27 @@
 from typing import Optional
 
-from pydantic import HttpUrl
-
 from models.word import Word, WordPictogramView, WordShortView
 
 
-async def find_word_en(word_en: str) -> Optional[Word]:
-    word = await Word.find_one(Word.en == word_en.strip().title())
-    return word
+async def find_word(word: str) -> Optional[Word]:
+    return await Word.find_one(Word.text == word.strip().title())
 
 
 async def create_word(
-    en: str,
-    fr: str,
-    pictogram: HttpUrl,
-    asl_video: HttpUrl,
+    text: str,
+    pictogram: str,
+    asl_video: str,
     category: str | None,
 ):
-    if existing_word := await find_word_en(en):
-        print(f"Word {existing_word.en} already exists!")
+    if existing_word := await find_word(text):
+        print(f"Word {existing_word.text} already exists!")
         return existing_word
 
-    en = en.strip().title()
-    fr = fr.strip().title()
+    text = text.strip().title()
     category = category.strip().title() if category else None
 
     word = Word(
-        en=en,
-        fr=fr,
+        text=text,
         pictogram=pictogram,
         asl_video=asl_video,
         category=category,
@@ -35,7 +29,7 @@ async def create_word(
 
     await word.save()
 
-    print(f"New word created: {word.en}")
+    print(f"New word created: {word.text}")
 
     return word
 
@@ -48,12 +42,12 @@ async def get_pictograms():
     return await Word.find().project(WordPictogramView).to_list()
 
 
-async def delete_word_en(word_en: str):
-    word = await find_word_en(word_en)
-    if word:
-        await word.delete()
+async def delete_word(word: str):
+    found = await find_word(word)
+    if found:
+        await found.delete()
 
 
-async def get_words_by_category(category_en: str) -> list[Word]:
-    words = await Word.find(Word.category == category_en.strip().title()).to_list()
+async def get_words_by_category(category: str) -> list[Word]:
+    words = await Word.find(Word.category == category.strip().title()).to_list()
     return words

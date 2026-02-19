@@ -62,23 +62,24 @@ uvicorn main:api --reload
 ### Web Interface
 - Browse words by categories
 - View detailed word information including:
-  - English word
-  - Category
+  - Word text
+  - Category (with optional parent category hierarchy)
   - Pictogram representation
   - ASL video demonstration (when available)
+- Breadcrumb navigation with pictograms
 - Responsive design that works on desktop and mobile devices
 
 ### API Endpoints
 
 #### Categories
-- `GET /api/categories/en/{category_en}`: Get a category by English name
+- `GET /api/categories/{category}`: Get a category by name
 - `POST /api/categories`: Create a new category
 
 #### Words
 - `GET /api/words`: Get all words
-- `GET /api/words/en/{word_en}`: Get a word by English name
+- `GET /api/words/{word}`: Get a word by name
 - `POST /api/words`: Create a new word
-- `DELETE /api/words/en/{word_en}`: Delete a word by English name
+- `DELETE /api/words/{word}`: Delete a word by name
 - `GET /api/pictograms`: Get all pictograms
 
 ## Project Structure
@@ -95,7 +96,9 @@ dictionary/
 │       ├── base.html
 │       ├── category.html
 │       ├── index.html
-│       └── word.html
+│       ├── word.html
+│       └── partials/
+│           └── breadcrumb.html
 ├── infrastructure/        # Configuration and setup
 │   ├── mongo_setup.py
 │   └── template_config.py

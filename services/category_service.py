@@ -1,36 +1,30 @@
 from typing import Optional
 
-from pydantic import HttpUrl
-
 from models.category import Category
 
 
-async def find_category_en(category_en: str) -> Optional[Category]:
-    category = await Category.find_one(Category.en == category_en.strip().title())
-    return category
+async def find_category(category: str) -> Optional[Category]:
+    return await Category.find_one(Category.text == category.strip().title())
 
 
 async def create_category(
-    en: str,
-    fr: str,
-    pictogram: HttpUrl,
+    text: str,
+    pictogram: str,
 ):
-    if existing_category := await find_category_en(en):
-        print(f"Category {existing_category.en} already exists!")
+    if existing_category := await find_category(text):
+        print(f"Category {existing_category.text} already exists!")
         return existing_category
 
-    en = en.strip().title()
-    fr = fr.strip().title()
+    text = text.strip().title()
 
     category = Category(
-        en=en,
-        fr=fr,
+        text=text,
         pictogram=pictogram,
     )
 
     await category.insert()
 
-    print(f"New category created: {category.en}")
+    print(f"New category created: {category.text}")
 
     return category
 

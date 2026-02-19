@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ word.en }} - Dictionary App{% endblock %}
+{% block title %}{{ word.text }} - Dictionary App{% endblock %}
 
 {% block breadcrumb %}
 {% include "partials/breadcrumb.html" %}
@@ -12,13 +12,13 @@
     <div class="bg-dark-800 rounded-lg shadow-lg p-8 border border-dark-700">
         <!-- Word Header -->
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-neutral-100 mb-4">{{ word.en }}</h1>
+            <h1 class="text-4xl font-bold text-neutral-100 mb-4">{{ word.text }}</h1>
         </div>
 
         <!-- Pictogram -->
         {% if word.pictogram %}
         <div class="flex justify-center mb-8">
-            <img class="w-[150px] h-auto rounded-xl" src="{{ word.pictogram }}" alt="{{ word.en }} Pictogram">
+            <img class="w-[150px] h-auto rounded-xl" src="{{ word.pictogram }}" alt="{{ word.text }} Pictogram">
         </div>
         {% endif %}
 

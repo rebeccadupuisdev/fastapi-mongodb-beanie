@@ -8,14 +8,14 @@
     <svg class="w-6 h-6 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
     </svg>
-    <a href="/category/{{ category.en|lower }}" class="flex items-center">
-        <img class="h-[90px] w-auto object-contain brightness-90" src="{{ category.pictogram }}" alt="{{ category.en }} Pictogram">
+    <a href="/category/{{ category.text|lower }}" class="flex items-center">
+        <img class="h-[90px] w-auto object-contain brightness-90" src="{{ category.pictogram }}" alt="{{ category.text }} Pictogram">
     </a>
     {% endif %}
     {% if word %}
     <svg class="w-6 h-6 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
     </svg>
-    <img class="h-[90px] w-auto object-contain brightness-90" src="{{ word.pictogram }}" alt="{{ word.en }} Pictogram">
+    <img class="h-[90px] w-auto object-contain brightness-90" src="{{ word.pictogram }}" alt="{{ word.text }} Pictogram">
     {% endif %}
 </div>

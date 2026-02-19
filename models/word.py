@@ -3,11 +3,8 @@ from pydantic import BaseModel, Field, HttpUrl
 
 
 class WordCreate(BaseModel):
-    en: str = Field(
+    text: str = Field(
         ..., title="Word in english", json_schema_extra={"example": "Cheese"}
-    )
-    fr: str = Field(
-        ..., title="Word in french", json_schema_extra={"example": "Fromage"}
     )
     pictogram: HttpUrl = Field(
         ...,
@@ -30,10 +27,9 @@ class Word(WordCreate, Document):
 
 
 class WordShortView(BaseModel):
-    en: str
-    fr: str
+    text: str
 
 
 class WordPictogramView(BaseModel):
-    en: str
+    text: str
     pictogram: HttpUrl

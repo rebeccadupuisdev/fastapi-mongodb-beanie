@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ category.en }} - Dictionary App{% endblock %}
+{% block title %}{{ category.text }} - Dictionary App{% endblock %}
 
 {% block breadcrumb %}
 {% include "partials/breadcrumb.html" %}
@@ -9,16 +9,16 @@
 {% block content %}
 <!-- Category Header -->
 <div class="mb-8 text-center">
-    <img id="category-pictogram" class="mx-auto mb-4 h-[200px] w-auto object-contain max-w-[600px] max-h-[600px] brightness-90 rounded-lg" src="{{ category.pictogram }}" alt="{{ category.en }} Pictogram">
-    <h1 id="category-title" class="text-3xl font-bold text-neutral-100 mb-2">{{ category.en }}</h1>
+    <img id="category-pictogram" class="mx-auto mb-4 h-[200px] w-auto object-contain max-w-[600px] max-h-[600px] brightness-90 rounded-lg" src="{{ category.pictogram }}" alt="{{ category.text }} Pictogram">
+        <h1 id="category-title" class="text-3xl font-bold text-neutral-100 mb-2">{{ category.text }}</h1>
 </div>
 
 <!-- Words Grid -->
 <div class="flex flex-wrap justify-center gap-6">
     {% for word in words %}
-    <a href="/word/{{ word.en|lower }}" class="no-underline bg-dark-800 rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition-all duration-200 border border-dark-700 transform hover:-translate-y-1 w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(20%-1.2rem)] max-w-xs">
-        <img class="mb-4 w-full h-auto max-w-[600px] max-h-[600px] brightness-90 rounded-lg" src="{{ word.pictogram }}" alt="{{ word.en }} Pictogram">
-        <h2 class="text-xl font-semibold text-neutral-100">{{ word.en }}</h2>
+    <a href="/word/{{ word.text|lower }}" class="no-underline bg-dark-800 rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition-all duration-200 border border-dark-700 transform hover:-translate-y-1 w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(20%-1.2rem)] max-w-xs">
+        <img class="mb-4 w-full h-auto max-w-[600px] max-h-[600px] brightness-90 rounded-lg" src="{{ word.pictogram }}" alt="{{ word.text }} Pictogram">
+        <h2 class="text-xl font-semibold text-neutral-100">{{ word.text }}</h2>
     </a>
     {% endfor %}
 </div>

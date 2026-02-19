@@ -1,14 +1,9 @@
-from beanie import Document
+from beanie import Document, Link
 from pydantic import BaseModel, Field, HttpUrl
 
 
 class CategoryCreate(BaseModel):
-    en: str = Field(
-        ..., title="Category in english", json_schema_extra={"example": "Food"}
-    )
-    fr: str = Field(
-        ..., title="Category in french", json_schema_extra={"example": "Nourriture"}
-    )
+    text: str = Field(..., title="Category name", json_schema_extra={"example": "Food"})
     pictogram: HttpUrl = Field(
         ...,
         title="Link of the pictogram image",
@@ -17,5 +12,7 @@ class CategoryCreate(BaseModel):
 
 
 class Category(CategoryCreate, Document):
+    parent_category: Link["Category"] | None = None
+
     class Settings:
         name = "categories"
