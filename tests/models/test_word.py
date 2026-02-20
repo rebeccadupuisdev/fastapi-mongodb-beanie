@@ -1,4 +1,5 @@
-from pydantic import HttpUrl
+import pytest
+from pydantic import HttpUrl, ValidationError
 
 from models.word import WordCreate
 
@@ -27,3 +28,8 @@ def test_word_create_category():
     assert w.pictogram == HttpUrl("http://example.com/image.jpg")
     assert w.asl_video == HttpUrl("http://example.com/video.mp4")
     assert w.category == "Food"
+
+
+def test_word_create_missing_required_fields():
+    with pytest.raises(ValidationError):
+        WordCreate(text="Cheese")  # type: ignore

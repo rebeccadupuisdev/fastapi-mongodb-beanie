@@ -29,5 +29,5 @@ async def clean_db(db_session):
     """
     Clear test database collections before each test
     """
-    await db_session.get_database().drop_collection(Word.get_collection_name())
-    await db_session.get_database().drop_collection(Category.get_collection_name())
+    await db_session.get_database()[Word.get_collection_name()].delete_many({})
+    await db_session.get_database()[Category.get_collection_name()].delete_many({})
