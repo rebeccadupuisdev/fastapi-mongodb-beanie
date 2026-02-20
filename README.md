@@ -113,8 +113,10 @@ dictionary/
 │   ├── home_views.py
 │   └── word_views.py
 ├── tests/               # Test files
+│   ├── api/
 │   ├── models/
-│   └── services/
+│   ├── services/
+│   └── conftest.py
 ├── main.py              # Application entry point
 ├── pytest.ini           # pytest configuration
 ├── pyproject.toml       # Project configuration (Ruff)
