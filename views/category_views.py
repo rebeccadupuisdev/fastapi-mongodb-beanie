@@ -15,7 +15,7 @@ async def get_category_page(request: Request, category: str):
     if not found:
         return HTMLResponse(content="Category not found", status_code=404)
 
-    words = await get_words_by_category(category)
+    words = await get_words_by_category(found)
     return templates.TemplateResponse(
         "category.html", {"request": request, "category": found, "words": words}
     )

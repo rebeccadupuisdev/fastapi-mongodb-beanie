@@ -10,16 +10,25 @@ async def find_category(category: str) -> Optional[Category]:
 async def create_category(
     text: str,
     pictogram: str,
+    parent_category: str | None = None,
 ):
     if existing_category := await find_category(text):
         print(f"Category {existing_category.text} already exists!")
         return existing_category
+
+    if parent_category:
+        existing_parent_category = await find_category(parent_category)
+        if not existing_parent_category:
+            print(f"Parent category {parent_category} not found!")
+            return None
+        parent_category = existing_parent_category
 
     text = text.strip().title()
 
     category = Category(
         text=text,
         pictogram=pictogram,
+        parent_category=parent_category,
     )
 
     await category.insert()
@@ -32,3 +41,9 @@ async def create_category(
 async def get_categories() -> list[Category]:
     categories = await Category.find_all().to_list()
     return categories
+
+
+async def delete_category(category: str):
+    found = await find_category(category)
+    if found:
+        await found.delete()

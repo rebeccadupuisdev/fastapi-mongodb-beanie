@@ -8,9 +8,11 @@
     <svg class="w-6 h-6 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
     </svg>
+    {% if word %}
     <a href="/category/{{ category.text|lower }}" class="flex items-center">
+    {% endif %}
         <img class="h-[90px] w-auto object-contain brightness-90" src="{{ category.pictogram }}" alt="{{ category.text }} Pictogram">
-    </a>
+        {% if word %}</a>{% endif %}
     {% endif %}
     {% if word %}
     <svg class="w-6 h-6 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

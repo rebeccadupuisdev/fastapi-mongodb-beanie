@@ -1,8 +1,10 @@
-from beanie import Document
+from beanie import Document, Link
 from pydantic import BaseModel, Field, HttpUrl
 
+from models.category import Category
 
-class WordCreate(BaseModel):
+
+class BaseWord(BaseModel):
     text: str = Field(
         ..., title="Word in english", json_schema_extra={"example": "Cheese"}
     )
@@ -16,12 +18,17 @@ class WordCreate(BaseModel):
         title="Link of the ASL video",
         json_schema_extra={"example": "http://example.com/cheese.mp4"},
     )
+
+
+class WordCreate(BaseWord):
     category: str | None = Field(
         None, title="Category for the word", json_schema_extra={"example": "Food"}
     )
 
 
-class Word(WordCreate, Document):
+class Word(BaseWord, Document):
+    category: Link["Category"] | None = None
+
     class Settings:
         name = "words"
 

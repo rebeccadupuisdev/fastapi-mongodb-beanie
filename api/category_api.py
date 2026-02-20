@@ -15,8 +15,8 @@ router = fastapi.APIRouter()
 async def api_find_category(category: str):
     found = await find_category(category)
     if not found:
-        return fastapi.responses.JSONResponse(
-            {"error": f"Category {category.title()} not found"}, status_code=404
+        raise fastapi.HTTPException(
+            status_code=404, detail=f"Category {category.title()} not found"
         )
     return found
 
@@ -29,4 +29,9 @@ async def api_find_category(category: str):
 )
 async def api_create_category(category: CategoryCreate):
     new_category = await create_category(**category.model_dump(mode="json"))
+    if not new_category:
+        raise fastapi.HTTPException(
+            status_code=400,
+            detail=f"Category {category.text} not created, parent category not found",
+        )
     return new_category
