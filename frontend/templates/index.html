@@ -8,7 +8,7 @@
 <!-- Categories Grid -->
 <div id="content" class="flex flex-wrap justify-center gap-6">
     {% for category in categories %}
-    <a href="/category/{{ category.text|lower }}" class="no-underline bg-amber-900 rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition-all duration-200 border border-dark-700 transform hover:-translate-y-1 w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(20%-1.2rem)] max-w-xs">
+    <a href="/category/{{ category.text|lower }}" class="no-underline bg-teal-900 rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition-all duration-200 border border-teal-700 transform hover:-translate-y-1 w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(20%-1.2rem)] max-w-xs">
         <img class="mb-4 w-full h-auto max-w-[600px] max-h-[600px] brightness-90 rounded-lg" src="{{ category.pictogram }}" alt="{{ category.text }} Pictogram">
         <h2 class="text-xl font-semibold text-neutral-100">{{ category.text }}</h2>
     </a>
