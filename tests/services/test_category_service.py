@@ -6,6 +6,8 @@ from services.category_service import (
     delete_category,
     find_category,
     get_categories,
+    get_categories_by_parent_category,
+    get_category_ancestors,
 )
 
 # ---------------------------------------------------------------------------
@@ -126,6 +128,22 @@ async def test_get_categories_returns_all_categories():
     assert {c.text for c in categories} == {"Food", "Animals"}
 
 
+@pytest.mark.asyncio(loop_scope="session")
+async def test_get_categories_excludes_child_categories():
+    """Child categories are not included in the top-level listing."""
+    await create_category(text="Food", pictogram="http://example.com/food.jpg")
+    await create_category(
+        text="Sweets",
+        pictogram="http://example.com/sweets.jpg",
+        parent_category="Food",
+    )
+
+    categories = await get_categories()
+
+    assert len(categories) == 1
+    assert categories[0].text == "Food"
+
+
 # ---------------------------------------------------------------------------
 # delete_category
 # ---------------------------------------------------------------------------
@@ -145,3 +163,91 @@ async def test_delete_category_removes_it():
 async def test_delete_category_not_found_does_not_raise():
     """Deleting a category that does not exist is a silent no-op."""
     await delete_category("NonExistent")
+
+
+# ---------------------------------------------------------------------------
+# get_categories_by_parent_category
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_get_categories_by_parent_category():
+    """Only direct children of the given category are returned."""
+    parent = await create_category(text="Food", pictogram="http://example.com/food.jpg")
+    await create_category(
+        text="Sweets",
+        pictogram="http://example.com/sweets.jpg",
+        parent_category="Food",
+    )
+    await create_category(
+        text="Fruits",
+        pictogram="http://example.com/fruits.jpg",
+        parent_category="Food",
+    )
+    children = await get_categories_by_parent_category(parent)
+
+    assert len(children) == 2
+    assert {c.text for c in children} == {"Sweets", "Fruits"}
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_get_categories_by_parent_category_returns_empty_when_no_children():
+    """A category with no children returns [] not None."""
+    parent = await create_category(text="Food", pictogram="http://example.com/food.jpg")
+
+    children = await get_categories_by_parent_category(parent)
+
+    assert children == []
+
+
+# ---------------------------------------------------------------------------
+# get_category_ancestors
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_get_category_ancestors_returns_empty_for_root():
+    """A root category (no parent) has no ancestors."""
+    root = await create_category(text="Food", pictogram="http://example.com/food.jpg")
+
+    ancestors = await get_category_ancestors(root)
+
+    assert ancestors == []
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_get_category_ancestors_returns_parent():
+    """A category one level deep returns a list containing only its parent."""
+    await create_category(text="Food", pictogram="http://example.com/food.jpg")
+    child = await create_category(
+        text="Sweets",
+        pictogram="http://example.com/sweets.jpg",
+        parent_category="Food",
+    )
+
+    ancestors = await get_category_ancestors(child)
+
+    assert len(ancestors) == 1
+    assert ancestors[0].text == "Food"
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_get_category_ancestors_returns_ordered_chain():
+    """Ancestors are returned root-first for a multi-level hierarchy."""
+    await create_category(text="Food", pictogram="http://example.com/food.jpg")
+    await create_category(
+        text="Sweets",
+        pictogram="http://example.com/sweets.jpg",
+        parent_category="Food",
+    )
+    grandchild = await create_category(
+        text="Chocolate",
+        pictogram="http://example.com/chocolate.jpg",
+        parent_category="Sweets",
+    )
+
+    ancestors = await get_category_ancestors(grandchild)
+
+    assert len(ancestors) == 2
+    assert ancestors[0].text == "Food"  # root comes first
+    assert ancestors[1].text == "Sweets"  # then the immediate parent

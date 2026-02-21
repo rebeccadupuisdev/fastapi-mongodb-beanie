@@ -39,8 +39,27 @@ async def create_category(
 
 
 async def get_categories() -> list[Category]:
-    categories = await Category.find_all().to_list()
+    categories = await Category.find(
+        Category.parent_category == None  # noqa: E711
+    ).to_list()
     return categories
+
+
+async def get_categories_by_parent_category(category: Category) -> list[Category]:
+    return await Category.find(Category.parent_category.id == category.id).to_list()
+
+
+async def get_category_ancestors(category: Category) -> list[Category]:
+    ancestors = []
+    current = category
+    while current.parent_category is not None:
+        if isinstance(current.parent_category, Category):
+            parent = await Category.get(current.parent_category.id)
+        else:
+            parent = await Category.get(current.parent_category.ref.id)
+        ancestors.insert(0, parent)  # prepend so root comes first
+        current = parent
+    return ancestors
 
 
 async def delete_category(category: str):

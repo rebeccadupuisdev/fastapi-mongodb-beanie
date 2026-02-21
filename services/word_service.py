@@ -60,5 +60,5 @@ async def delete_word(word: str):
 
 
 async def get_words_by_category(category: Category) -> list[Word]:
-    words = await Word.find({"category.$id": category.id}).to_list()
+    words = await Word.find(Word.category.id == category.id).to_list()
     return words

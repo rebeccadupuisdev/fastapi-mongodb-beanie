@@ -60,13 +60,13 @@ uvicorn main:api --reload
 ## Features
 
 ### Web Interface
-- Browse words by categories
+- Browse a hierarchical category structure with nested subcategories and words
 - View detailed word information including:
   - Word text
-  - Category (with optional parent category hierarchy)
+  - Category (with full ancestor hierarchy)
   - Pictogram representation
   - ASL video demonstration (when available)
-- Breadcrumb navigation with pictograms
+- Pictogram-based breadcrumb navigation showing the full ancestor chain
 - Responsive design that works on desktop and mobile devices
 
 ### API Endpoints
