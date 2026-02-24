@@ -90,8 +90,11 @@ dictionary/
 │   ├── category_api.py
 │   └── word_api.py
 ├── frontend/              # Frontend assets and templates
-│   ├── static/            # Static files (created at runtime if needed)
-│   │   └── content/      # Static content (videos, images) - gitignored
+│   ├── static/
+│   │   ├── content/      # Static content (videos, images) - gitignored
+│   │   │   └── videos/
+│   │   ├── css/
+│   │   └── js/
 │   └── templates/        # Jinja2 templates
 │       ├── base.html
 │       ├── category.html
@@ -114,8 +117,15 @@ dictionary/
 │   └── word_views.py
 ├── tests/               # Test files
 │   ├── api/
+│   │   ├── conftest.py
+│   │   ├── test_category_api.py
+│   │   └── test_word_api.py
 │   ├── models/
+│   │   ├── test_category.py
+│   │   └── test_word.py
 │   ├── services/
+│   │   ├── test_category_service.py
+│   │   └── test_word_service.py
 │   └── conftest.py
 ├── main.py              # Application entry point
 ├── pytest.ini           # pytest configuration
