@@ -1,5 +1,4 @@
 from models.category import Category
-from services.word_service import get_words_by_category
 
 
 async def find_category(category: str) -> Category | None:
@@ -62,6 +61,8 @@ async def get_category_ancestors(category: Category) -> list[Category]:
 
 
 async def delete_category(category: str) -> None:
+    from services.word_service import get_words_by_category
+
     found = await find_category(category)
     if found:
         words = await get_words_by_category(found)
