@@ -1,9 +1,8 @@
-from typing import Optional
-
 from models.category import Category
+from services.word_service import get_words_by_category
 
 
-async def find_category(category: str) -> Optional[Category]:
+async def find_category(category: str) -> Category | None:
     return await Category.find_one(Category.text == category.strip().title())
 
 
@@ -11,7 +10,7 @@ async def create_category(
     text: str,
     pictogram: str,
     parent_category: str | None = None,
-):
+) -> Category | None:
     if existing_category := await find_category(text):
         print(f"Category {existing_category.text} already exists!")
         return existing_category
@@ -62,7 +61,17 @@ async def get_category_ancestors(category: Category) -> list[Category]:
     return ancestors
 
 
-async def delete_category(category: str):
+async def delete_category(category: str) -> None:
     found = await find_category(category)
     if found:
+        words = await get_words_by_category(found)
+        for word in words:
+            word.category = None
+            await word.save()
+
+        subcategories = await get_categories_by_parent_category(found)
+        for cat in subcategories:
+            cat.parent_category = None
+            await cat.save()
+
         await found.delete()

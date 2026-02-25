@@ -9,6 +9,7 @@ from services.category_service import (
     get_categories_by_parent_category,
     get_category_ancestors,
 )
+from services.word_service import create_word, find_word
 
 # ---------------------------------------------------------------------------
 # create_category
@@ -163,6 +164,41 @@ async def test_delete_category_removes_it():
 async def test_delete_category_not_found_does_not_raise():
     """Deleting a category that does not exist is a silent no-op."""
     await delete_category("NonExistent")
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_delete_category_nullifies_words():
+    """Words that belonged to the deleted category become uncategorized."""
+    await create_category(text="Food", pictogram="http://example.com/food.jpg")
+    await create_word(
+        text="Cheese",
+        pictogram="http://example.com/cheese.jpg",
+        asl_video="http://example.com/cheese.mp4",
+        category="Food",
+    )
+
+    await delete_category("Food")
+
+    cheese = await find_word("Cheese")
+    assert cheese is not None
+    assert cheese.category is None
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_delete_category_nullifies_child_categories():
+    """Sub-categories of the deleted category lose their parent link."""
+    await create_category(text="Food", pictogram="http://example.com/food.jpg")
+    await create_category(
+        text="Sweets",
+        pictogram="http://example.com/sweets.jpg",
+        parent_category="Food",
+    )
+
+    await delete_category("Food")
+
+    sweets = await find_category("Sweets")
+    assert sweets is not None
+    assert sweets.parent_category is None
 
 
 # ---------------------------------------------------------------------------
