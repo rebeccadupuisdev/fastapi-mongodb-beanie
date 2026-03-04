@@ -1,11 +1,9 @@
-from typing import Optional
-
 from models.category import Category
 from models.word import Word, WordPictogramView, WordShortView
 from services.category_service import find_category
 
 
-async def find_word(word: str) -> Optional[Word]:
+async def find_word(word: str) -> Word | None:
     word_found = await Word.find_one(Word.text == word.strip().title())
     if word_found and word_found.category:
         word_found.category = await Category.get(word_found.category.ref.id)
